@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hope — Support Emergency Causes with Confidence</title>
+  <meta name="description" content="Hope is a transparent emergency relief platform. Understand any crisis in seconds, feel confident before giving, and stay connected to the real impact of your support." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ═══════════ NAVBAR ═══════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a class="nav-logo" href="#hero">
+        <span class="logo-pulse"></span>
+        <span class="logo-text">Hope</span>
+      </a>
+      <div class="nav-links">
+        <a href="#crises" class="nav-link">Active Crises</a>
+        <a href="#stories" class="nav-link">Stories</a>
+        <a href="#how" class="nav-link">How It Works</a>
+        <a href="#impact" class="nav-link">Impact</a>
+        <a href="#trust" class="nav-link">Transparency</a>
+      </div>
+      <div class="nav-right">
+        <button class="notif-btn" id="notifBtn" onclick="toggleNotifPanel()" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span class="notif-badge" id="notifBadge">2</span>
+        </button>
+        <button class="nav-cta" onclick="openModal('crisis-flood')">Give Now</button>
+        <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#crises" onclick="toggleMenu()">Active Crises</a>
+      <a href="#stories" onclick="toggleMenu()">Stories</a>
+      <a href="#how" onclick="toggleMenu()">How It Works</a>
+      <a href="#impact" onclick="toggleMenu()">Impact</a>
+      <a href="#trust" onclick="toggleMenu()">Transparency</a>
+      <button onclick="openModal('crisis-flood'); toggleMenu();" class="mobile-cta-btn">Give Now →</button>
+    </div>
+  </nav>
+
+  <!-- ═══════════ NOTIFICATION PANEL ═══════════ -->
+  <div class="notif-overlay" id="notifOverlay" onclick="closeNotifPanel()"></div>
+  <div class="notif-panel" id="notifPanel">
+    <div class="notif-panel-header">
+      <h3>Notifications</h3>
+      <button onclick="markAllRead()" class="notif-mark-read">Mark all read</button>
+      <button onclick="closeNotifPanel()" class="notif-close-btn">✕</button>
+    </div>
+    <div class="notif-list" id="notifList">
+      <!-- Populated by JS -->
+    </div>
+    <div class="notif-panel-footer">
+      <p>Receipts & field updates land here after you donate.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════ HERO — Animated Video-Like Background ═══════════ -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <img src="hero.png" alt="" class="hero-img" aria-hidden="true" />
+      <canvas id="particleCanvas" class="particle-canvas"></canvas>
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="live-dot"></span>
+        <span>3 Active Emergencies Right Now</span>
+      </div>
+      <h1 class="hero-title">Real Help.<br />Right When<br /><span class="hero-highlight">It's Needed.</span></h1>
+      <p class="hero-subtitle">Understand any crisis in 30 seconds. Give confidently. Track exactly where your support goes — always.</p>
+      <div class="hero-actions">
+        <a href="#crises" class="btn-primary">
+          <span>See Active Crises</span>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#how" class="btn-ghost">How It Works</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="stat-num" data-target="14820">0</span>
+          <span class="stat-label">People helped</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="stat-num" data-target="312">0</span>
+          <span class="stat-label">Donors this week</span>
+        </div>
+        <div class="hero-stat-divider"></div>
+        <div class="hero-stat">
+          <span class="stat-num" data-prefix="₹" data-target="4860000">0</span>
+          <span class="stat-label">Raised this month</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll to explore</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════ LIVE TICKER ═══════════ -->
+  <div class="ticker-bar">
+    <div class="ticker-label">🔴 LIVE</div>
+    <div class="ticker-track">
+      <div class="ticker-content">
+        <span>🌊 Assam Floods — 2,400 families displaced, water supplies critical &nbsp;•&nbsp;</span>
+        <span>🏔️ Nepal Earthquake — 47 schools damaged, 1,800 children displaced &nbsp;•&nbsp;</span>
+        <span>🏥 South Sudan — Cholera outbreak, 600 urgent cases, clinics overwhelmed &nbsp;•&nbsp;</span>
+        <span>✅ Update: Odisha relief — 500 hygiene kits delivered successfully, 2 hrs ago &nbsp;•&nbsp;</span>
+        <span>💧 Clean water reached 300 more families in Sylhet, Bangladesh — confirmed &nbsp;•&nbsp;</span>
+        <span>🚁 Helicopter drop completed — 200 emergency food packs, Assam District 4 &nbsp;•&nbsp;</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ ACTIVE CRISES ═══════════ -->
+  <section class="section" id="crises">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Active Right Now</div>
+        <h2 class="section-title">Crises That Need You Today</h2>
+        <p class="section-sub">Each card is verified. See the real situation, what's needed, and exactly how your support helps — before giving a single rupee.</p>
+      </div>
+      <div class="crisis-grid">
+
+        <!-- CARD 1 -->
+        <article class="crisis-card" id="card-flood">
+          <div class="card-urgency urgent">🔴 Critical — Act Now</div>
+          <div class="card-image-wrap">
+            <img src="flood.png" alt="Flooding in Assam displacing thousands" class="card-image" loading="lazy" />
+            <div class="card-image-fade"></div>
+            <div class="card-live-tag">📡 Live Updates</div>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="card-category">🌊 Flood Relief</span>
+              <span class="card-location">📍 Assam, India</span>
+            </div>
+            <h3 class="card-title">Assam Floods: 2,400 Families Stranded Without Clean Water</h3>
+            <p class="card-desc">Monsoon floods have submerged 18 villages. Families survive on rooftops. Clean water, dry food, and hygiene kits are urgently needed right now.</p>
+            <div class="card-need-summary">
+              <div class="need-item"><span class="need-icon">💧</span><span>Clean water for 2,400 families</span></div>
+              <div class="need-item"><span class="need-icon">🍱</span><span>Emergency food packs — 5,000 needed</span></div>
+              <div class="need-item"><span class="need-icon">🧴</span><span>Hygiene kits — 1,200 needed</span></div>
+            </div>
+            <div class="card-progress-wrap">
+              <div class="card-progress-labels">
+                <span>₹12,40,000 raised</span>
+                <span>Goal: ₹20,00,000</span>
+              </div>
+              <div class="card-progress-bar">
+                <div class="card-progress-fill" data-width="62" style="width:0%"></div>
+              </div>
+              <div class="card-progress-meta">
+                <span>62% funded</span>
+                <span id="donors-crisis-flood">187 donors</span>
+              </div>
+            </div>
+            <div class="card-trust">
+              <span class="trust-badge">✅ Verified NGO</span>
+              <span class="trust-badge">📊 Audited</span>
+              <span class="trust-badge">📍 GPS Tracked</span>
+            </div>
+            <button class="btn-card" onclick="openModal('crisis-flood')">Support This Crisis →</button>
+          </div>
+        </article>
+
+        <!-- CARD 2 -->
+        <article class="crisis-card" id="card-earthquake">
+          <div class="card-urgency high">🟠 High Priority</div>
+          <div class="card-image-wrap">
+            <img src="earthquake.png" alt="Earthquake damage rescue workers" class="card-image" loading="lazy" />
+            <div class="card-image-fade"></div>
+            <div class="card-live-tag">📡 Live Updates</div>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="card-category">🏔️ Earthquake</span>
+              <span class="card-location">📍 Nepal Border</span>
+            </div>
+            <h3 class="card-title">Nepal Quake: 1,800 Children Without Shelter or School</h3>
+            <p class="card-desc">A 6.1 magnitude earthquake destroyed 47 school buildings and 200 homes. Children sleep in open fields. Temporary shelters needed urgently.</p>
+            <div class="card-need-summary">
+              <div class="need-item"><span class="need-icon">⛺</span><span>Emergency tents — 400 units needed</span></div>
+              <div class="need-item"><span class="need-icon">📚</span><span>Learning kits for 1,800 children</span></div>
+              <div class="need-item"><span class="need-icon">🔧</span><span>Structural repair materials</span></div>
+            </div>
+            <div class="card-progress-wrap">
+              <div class="card-progress-labels">
+                <span>₹8,50,000 raised</span>
+                <span>Goal: ₹18,00,000</span>
+              </div>
+              <div class="card-progress-bar">
+                <div class="card-progress-fill" data-width="47" style="width:0%"></div>
+              </div>
+              <div class="card-progress-meta">
+                <span>47% funded</span>
+                <span id="donors-crisis-earthquake">124 donors</span>
+              </div>
+            </div>
+            <div class="card-trust">
+              <span class="trust-badge">✅ Verified NGO</span>
+              <span class="trust-badge">📊 Audited</span>
+              <span class="trust-badge">📍 GPS Tracked</span>
+            </div>
+            <button class="btn-card" onclick="openModal('crisis-earthquake')">Support This Crisis →</button>
+          </div>
+        </article>
+
+        <!-- CARD 3 -->
+        <article class="crisis-card" id="card-medical">
+          <div class="card-urgency medium">🟡 Ongoing Emergency</div>
+          <div class="card-image-wrap">
+            <img src="medical.png" alt="Medical workers in a field hospital" class="card-image" loading="lazy" />
+            <div class="card-image-fade"></div>
+            <div class="card-live-tag">📡 Live Updates</div>
+          </div>
+          <div class="card-body">
+            <div class="card-meta">
+              <span class="card-category">🏥 Medical</span>
+              <span class="card-location">📍 South Sudan</span>
+            </div>
+            <h3 class="card-title">South Sudan: Cholera Outbreak — 600 Urgent Cases</h3>
+            <p class="card-desc">Post-flood cholera is spreading fast. Partner clinics treat 80 new cases daily with dangerously low medical stock. Every hour counts.</p>
+            <div class="card-need-summary">
+              <div class="need-item"><span class="need-icon">💊</span><span>ORS & antibiotics for 600 patients</span></div>
+              <div class="need-item"><span class="need-icon">🩺</span><span>Medical volunteer support</span></div>
+              <div class="need-item"><span class="need-icon">🚰</span><span>Water purification tablets — 10,000</span></div>
+            </div>
+            <div class="card-progress-wrap">
+              <div class="card-progress-labels">
+                <span>₹6,80,000 raised</span>
+                <span>Goal: ₹15,00,000</span>
+              </div>
+              <div class="card-progress-bar">
+                <div class="card-progress-fill" data-width="45" style="width:0%"></div>
+              </div>
+              <div class="card-progress-meta">
+                <span>45% funded</span>
+                <span id="donors-crisis-medical">98 donors</span>
+              </div>
+            </div>
+            <div class="card-trust">
+              <span class="trust-badge">✅ Verified NGO</span>
+              <span class="trust-badge">📊 Audited</span>
+              <span class="trust-badge">📍 GPS Tracked</span>
+            </div>
+            <button class="btn-card" onclick="openModal('crisis-medical')">Support This Crisis →</button>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FIELD STORIES SLIDER ═══════════ -->
+  <section class="section section-alt" id="stories">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">From The Field</div>
+        <h2 class="section-title">Stories That Show Real Impact</h2>
+        <p class="section-sub">Field coordinators send back photo updates and stories so donors see exactly what changed after their support arrived.</p>
+      </div>
+      <div class="stories-slider-wrap">
+        <button class="slider-arrow slider-prev" id="storyPrev" onclick="slideStory(-1)" aria-label="Previous story">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="stories-slider" id="storiesSlider">
+          <div class="story-slide active">
+            <div class="story-img-wrap">
+              <img src="flood.png" alt="Flood relief delivery" class="story-img" />
+              <div class="story-img-label">Assam District 3 — July 8, 2026</div>
+            </div>
+            <div class="story-body">
+              <div class="story-tag">🌊 Flood Relief</div>
+              <h3 class="story-title">"We hadn't eaten in two days. Then the boat arrived."</h3>
+              <p class="story-text">Reena Bori, 34, and her four children spent 48 hours on the roof of their submerged home in Kamrup District. When the Hope-funded relief boat reached her, it carried 20 litres of clean water and emergency food packs — enough for her family for 5 days. "I kept telling my children help was coming," she said. "I didn't know if I was telling the truth. But it came."</p>
+              <div class="story-impact-row">
+                <div class="story-stat"><span class="story-stat-num">500</span><span>Families reached</span></div>
+                <div class="story-stat"><span class="story-stat-num">₹3.2L</span><span>Total spent</span></div>
+                <div class="story-stat"><span class="story-stat-num">100%</span><span>Audited</span></div>
+              </div>
+              <div class="story-coordinator">
+                <div class="coord-avatar">M</div>
+                <div>
+                  <div class="coord-name">Marcus Fernandez</div>
+                  <div class="coord-role">Field Coordinator — Assam</div>
+                </div>
+                <span class="coord-verified">✅ Verified</span>
+              </div>
+            </div>
+          </div>
+          <div class="story-slide">
+            <div class="story-img-wrap">
+              <img src="earthquake.png" alt="Children returning to school after earthquake" class="story-img" />
+              <div class="story-img-label">Gorkha District, Nepal — June 28, 2026</div>
+            </div>
+            <div class="story-body">
+              <div class="story-tag">🏔️ Earthquake Response</div>
+              <h3 class="story-title">"140 children are back in a safe classroom today."</h3>
+              <p class="story-text">After the quake destroyed Gorkha Primary School, 140 students studied outdoors for three weeks. Within 12 days of funding confirmation, our partner NGO "Himalayan SafeBuild" installed 6 modular seismic-resistant classroom units. Principal Devi Tamang walked through the new structure, running her hand along the reinforced wall. "It is real," she said, smiling.</p>
+              <div class="story-impact-row">
+                <div class="story-stat"><span class="story-stat-num">140</span><span>Kids in school</span></div>
+                <div class="story-stat"><span class="story-stat-num">12 days</span><span>Build time</span></div>
+                <div class="story-stat"><span class="story-stat-num">₹2.24L</span><span>Total spent</span></div>
+              </div>
+              <div class="story-coordinator">
+                <div class="coord-avatar">S</div>
+                <div>
+                  <div class="coord-name">Sunita Karki</div>
+                  <div class="coord-role">Field Coordinator — Nepal</div>
+                </div>
+                <span class="coord-verified">✅ Verified</span>
+              </div>
+            </div>
+          </div>
+          <div class="story-slide">
+            <div class="story-img-wrap">
+              <img src="medical.png" alt="Medical team treating cholera patients" class="story-img" />
+              <div class="story-img-label">Juba Region, South Sudan — July 2, 2026</div>
+            </div>
+            <div class="story-body">
+              <div class="story-tag">🏥 Medical Response</div>
+              <h3 class="story-title">"We were out of ORS. Then a truck arrived at midnight."</h3>
+              <p class="story-text">Dr. Amara Osei, running the Hope-partnered Riverside Clinic, had treated 80 cholera patients in a single day with no remaining oral rehydration salts. Hope's emergency logistics team activated a midnight supply drop. By morning, 600 ORS packets and 200 antibiotic courses had arrived. "Three of those patients would not have survived the night," Dr. Osei said quietly.</p>
+              <div class="story-impact-row">
+                <div class="story-stat"><span class="story-stat-num">600</span><span>Patients treated</span></div>
+                <div class="story-stat"><span class="story-stat-num">8 hrs</span><span>Supply response</span></div>
+                <div class="story-stat"><span class="story-stat-num">0</span><span>Deaths this week</span></div>
+              </div>
+              <div class="story-coordinator">
+                <div class="coord-avatar">A</div>
+                <div>
+                  <div class="coord-name">Dr. Amara Osei</div>
+                  <div class="coord-role">Partner Clinic Lead — South Sudan</div>
+                </div>
+                <span class="coord-verified">✅ Verified</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="slider-arrow slider-next" id="storyNext" onclick="slideStory(1)" aria-label="Next story">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      </div>
+      <div class="slider-dots" id="sliderDots">
+        <button class="dot active" onclick="goToStory(0)"></button>
+        <button class="dot" onclick="goToStory(1)"></button>
+        <button class="dot" onclick="goToStory(2)"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ HOW IT WORKS ═══════════ -->
+  <section class="section" id="how">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Simple by Design</div>
+        <h2 class="section-title">Designed to Help You Act — With Confidence</h2>
+        <p class="section-sub">We built Hope around one question: <em>how do we make emergency giving easy, trustworthy, and meaningful?</em></p>
+      </div>
+      <div class="how-steps">
+        <div class="how-step">
+          <div class="step-num">01</div>
+          <div class="step-icon">🔍</div>
+          <h3 class="step-title">Understand in 30 Seconds</h3>
+          <p class="step-desc">Every crisis card shows what happened, who's affected, and exactly what's needed — no jargon, no overwhelming walls of text.</p>
+        </div>
+        <div class="how-connector"></div>
+        <div class="how-step">
+          <div class="step-num">02</div>
+          <div class="step-icon">🛡️</div>
+          <h3 class="step-title">Give with Confidence</h3>
+          <p class="step-desc">Every campaign is verified, GPS-tracked, and audited. See real-time progress before and after you give — no black holes for your money.</p>
+        </div>
+        <div class="how-connector"></div>
+        <div class="how-step">
+          <div class="step-num">03</div>
+          <div class="step-icon">📬</div>
+          <h3 class="step-title">Stay Connected</h3>
+          <p class="step-desc">After you give, you receive live field updates directly about the efforts you funded — photos, milestones, and real stories from coordinators.</p>
+        </div>
+      </div>
+
+      <!-- MONEY FLOW TIMELINE -->
+      <div class="money-flow">
+        <h3 class="flow-title">How Your Money Moves — Transparently</h3>
+        <div class="flow-steps">
+          <div class="flow-step">
+            <div class="flow-icon">💳</div>
+            <div class="flow-label">You Donate</div>
+            <div class="flow-sub">Encrypted & secure</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-icon">🏦</div>
+            <div class="flow-label">Escrow Hold</div>
+            <div class="flow-sub">Auditor verifies</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-icon">🚁</div>
+            <div class="flow-label">Supply Dispatch</div>
+            <div class="flow-sub">GPS tracked</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-icon">🤝</div>
+            <div class="flow-label">Aid Delivered</div>
+            <div class="flow-sub">Photo confirmed</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-icon">📬</div>
+            <div class="flow-label">You're Notified</div>
+            <div class="flow-sub">Field update sent</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ IMPACT NUMBERS ═══════════ -->
+  <section class="section section-dark" id="impact">
+    <div class="container">
+      <div class="section-header light">
+        <div class="section-tag">Proven Impact</div>
+        <h2 class="section-title">Your Support Creates Real Change</h2>
+        <p class="section-sub" style="color:rgba(255,255,255,0.55)">Every number below is independently audited and field-verified.</p>
+      </div>
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="impact-icon">🏠</div>
+          <div class="impact-num" data-target="3240">0</div>
+          <div class="impact-label">Families Given Safe Shelter</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-icon">💧</div>
+          <div class="impact-num" data-target="8900">0</div>
+          <div class="impact-label">People With Access to Clean Water</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-icon">🍱</div>
+          <div class="impact-num" data-target="21500">0</div>
+          <div class="impact-label">Emergency Meals Delivered</div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-icon">🏥</div>
+          <div class="impact-num" data-target="1420">0</div>
+          <div class="impact-label">Patients Treated</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TRANSPARENCY ═══════════ -->
+  <section class="section" id="trust">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Built on Trust</div>
+        <h2 class="section-title">You'll Always Know Where Your Money Goes</h2>
+        <p class="section-sub">We believe transparency is the foundation of trust. Here's exactly how we keep every rupee accountable.</p>
+      </div>
+      <div class="trust-grid">
+        <div class="trust-item">
+          <div class="trust-icon">✅</div>
+          <h4>NGO Verification</h4>
+          <p>Every partner is legally registered and vetted before listing. Credentials are publicly visible on each campaign.</p>
+          <button class="trust-learn-btn" onclick="openPageModal('ngos')">See Partner NGOs →</button>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">📍</div>
+          <h4>GPS-Tracked Dispatch</h4>
+          <p>Relief supplies are tracked from distribution hubs to final delivery. You receive location-stamped updates as aid moves.</p>
+          <button class="trust-learn-btn" onclick="openPageModal('ledger')">View Public Ledger →</button>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">📊</div>
+          <h4>Audited Spending</h4>
+          <p>Independent auditors review every campaign. Full spending reports published within 30 days of each operation closing.</p>
+          <button class="trust-learn-btn" onclick="openPageModal('ledger')">See Audit Reports →</button>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">📬</div>
+          <h4>Direct Updates to You</h4>
+          <p>After donating, get real photo and text updates from field coordinators — the actual humans doing the work you funded.</p>
+          <button class="trust-learn-btn" onclick="toggleNotifPanel()">Open Inbox →</button>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">🔒</div>
+          <h4>Secure Payments</h4>
+          <p>All transactions are encrypted and processed through RBI-compliant gateways. Your data is never stored on our servers.</p>
+          <button class="trust-learn-btn" onclick="openPageModal('mission')">Our Mission →</button>
+        </div>
+        <div class="trust-item">
+          <div class="trust-icon">🌐</div>
+          <h4>Public Ledger</h4>
+          <p>Every donation and expense is logged on a public ledger — visible to anyone, anywhere. Nothing hidden, everything open.</p>
+          <button class="trust-learn-btn" onclick="openPageModal('ledger')">View Ledger →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FAQ ═══════════ -->
+  <section class="section section-alt" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Common Questions</div>
+        <h2 class="section-title">We Answer Every Question — Upfront</h2>
+      </div>
+      <div class="faq-list" id="faqList">
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>How do I know my donation reaches the right people?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Every donation is held in a verified escrow account and released only when our independent auditor confirms the supply dispatch is GPS-tracked and field-confirmed. You receive a photo receipt from the field coordinator within 48 hours.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>What percentage goes to actual relief vs. platform fees?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>92% of every donation goes directly to relief operations. 5% covers verified logistics and partner NGO admin costs. 3% covers our platform's operational costs — and this breakdown is published on every campaign page and our public ledger.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Can I choose what my money is specifically used for?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. When you donate to a specific crisis campaign (e.g., Assam Floods), your funds are ring-fenced to that campaign only. Within the campaign, you'll see the specific impact preview (e.g., "₹1,000 provides food for a family of 4 for 3 days") before confirming.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>How quickly does relief reach affected people?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Our partner NGOs are already on the ground when a crisis is listed. Donations are released within 24 hours of verification, and field coordinators confirm delivery via GPS photo logs. Our average supply response time is 8–12 hours from fund release.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>What happens to unspent funds if a campaign ends?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Donors are notified via email and given the option to redirect their remaining balance to another active crisis or request a refund within 14 days. We never quietly roll funds into a new campaign without donor consent.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ TESTIMONIALS ═══════════ -->
+  <section class="section" id="testimonials">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">From Our Community</div>
+        <h2 class="section-title">Why People Trust Hope</h2>
+      </div>
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"For the first time I knew exactly what my ₹500 would buy — a hygiene kit for a family. That clarity made me give immediately. The update photo 2 days later was emotional."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">P</div>
+            <div><div class="author-name">Priya Menon</div><div class="author-role">Software Engineer, Bengaluru</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card featured">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"I've donated to many platforms but Hope is different. The live ticker, progress bars, GPS updates — I never felt so connected to crisis relief before. I'm now a monthly donor."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">R</div>
+            <div><div class="author-name">Rahul Sharma</div><div class="author-role">Doctor, Mumbai</div></div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Hope's transparent ledger and independent audits gave me complete peace of mind. I donated ₹2,000 and tracked every rupee all the way to delivery confirmation."</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">A</div>
+            <div><div class="author-name">Ananya Krishnan</div><div class="author-role">Teacher, Chennai</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FINAL CTA ═══════════ -->
+  <section class="section cta-section">
+    <div class="cta-bg"></div>
+    <div class="container">
+      <div class="cta-content">
+        <h2 class="cta-title">Someone Needs Help Right Now.</h2>
+        <p class="cta-sub">You can make a real difference in the next 2 minutes. Pick a crisis, understand the situation, and give with complete confidence.</p>
+        <div class="cta-actions">
+          <a href="#crises" class="btn-primary btn-large">View Active Crises</a>
+          <button class="btn-ghost" onclick="openPageModal('mission')">Our Mission</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo"><span>🔴</span><span>Hope</span></div>
+          <p>Designing emergency support experiences that are simple, transparent, and emotionally meaningful.</p>
+          <p class="footer-ps"><strong>Problem Statement 3:</strong> Designing Hope During Emergencies</p>
+          <div class="footer-social">
+            <button class="social-btn" onclick="showToast('Following Hope on Twitter', '')">𝕏</button>
+            <button class="social-btn" onclick="showToast('Following Hope on Instagram', '')">📸</button>
+            <button class="social-btn" onclick="showToast('Joining Hope on LinkedIn', '')">in</button>
+          </div>
+        </div>
+        <div class="footer-links-col">
+          <h5>Platform</h5>
+          <a href="#crises">Active Crises</a>
+          <a href="#how">How It Works</a>
+          <a href="#impact">Impact</a>
+          <a href="#trust">Transparency</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-links-col">
+          <h5>About</h5>
+          <button onclick="openPageModal('mission')">Our Mission</button>
+          <button onclick="openPageModal('ngos')">Partner NGOs</button>
+          <button onclick="openPageModal('ledger')">Public Ledger</button>
+          <button onclick="openPageModal('contact')">Contact Us</button>
+        </div>
+        <div class="footer-links-col">
+          <h5>Get Updates</h5>
+          <p class="footer-newsletter-label">Enter your email to receive field updates and crisis alerts.</p>
+          <div class="footer-newsletter">
+            <input type="email" id="newsletterEmail" placeholder="your@email.com" class="footer-email-input" />
+            <button onclick="subscribeNewsletter()" class="footer-subscribe-btn">Subscribe</button>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Hope Platform. All relief funds go 100% to verified campaigns.</span>
+        <span>|</span>
+        <button onclick="openPageModal('mission')" class="footer-text-btn">Privacy Policy</button>
+        <span>|</span>
+        <button onclick="openPageModal('mission')" class="footer-text-btn">Terms</button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════ DONATION MODAL ═══════════ -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal" id="donationModal">
+      <button class="modal-close" onclick="closeModal(null,true)" aria-label="Close">✕</button>
+      <div class="modal-header" id="modalHeader"></div>
+      <div class="modal-body">
+        <p class="modal-section-label">Choose amount</p>
+        <div class="amount-grid">
+          <button class="amount-btn" data-val="250"  onclick="selectAmount(250)">₹250</button>
+          <button class="amount-btn" data-val="500"  onclick="selectAmount(500)">₹500</button>
+          <button class="amount-btn selected" data-val="1000" onclick="selectAmount(1000)">₹1,000</button>
+          <button class="amount-btn" data-val="2500" onclick="selectAmount(2500)">₹2,500</button>
+          <button class="amount-btn" data-val="5000" onclick="selectAmount(5000)">₹5,000</button>
+          <button class="amount-btn" data-val="custom" onclick="selectAmount('custom')">Custom</button>
+        </div>
+        <div class="custom-amount-wrap" id="customWrap">
+          <input type="number" id="customAmount" class="custom-input" placeholder="Enter amount in ₹" min="1" oninput="updateCustom(this.value)" />
+        </div>
+        <div class="impact-preview" id="impactPreview">
+          <div class="impact-preview-icon" id="impactIcon">🍱</div>
+          <p id="impactText">₹1,000 provides emergency food for a family of 4 for 3 days</p>
+        </div>
+        <p class="modal-section-label">Your details</p>
+        <form class="modal-form" id="donationForm" onsubmit="submitDonation(event)">
+          <input type="text" class="form-input" id="donorName" placeholder="Your full name" required />
+          <input type="email" class="form-input" id="donorEmail" placeholder="Email — for receipt & field updates" required />
+          <input type="tel" class="form-input" id="donorPhone" placeholder="Phone number (optional)" />
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span id="submitText">Donate ₹1,000 →</span>
+          </button>
+        </form>
+        <p class="modal-footnote">🔒 Encrypted payment &nbsp;•&nbsp; 📊 100% audited &nbsp;•&nbsp; 📬 You'll receive field photo updates</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ PAGE MODALS (Mission, NGOs, Ledger, Contact) ═══════════ -->
+  <div class="page-modal-overlay" id="pageModalOverlay" onclick="closePageModal(event)">
+    <div class="page-modal" id="pageModal">
+      <button class="modal-close" onclick="closePageModal(null,true)">✕</button>
+      <div id="pageModalContent"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════ SUCCESS TOAST ═══════════ -->
+  <div class="toast hidden" id="successToast">
+    <div class="toast-icon">✅</div>
+    <div class="toast-content">
+      <strong id="toastTitle">Thank you! Your support is confirmed.</strong>
+      <p id="toastMsg">You'll receive a receipt and field updates to your email.</p>
+    </div>
+    <button class="toast-close" onclick="closeToast()">✕</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
