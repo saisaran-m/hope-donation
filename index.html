@@ -21,6 +21,7 @@
       </a>
       <div class="nav-links">
         <a href="#crises" class="nav-link">Active Crises</a>
+        <a href="#interactive-packer" class="nav-link">Packer Kit</a>
         <a href="#stories" class="nav-link">Stories</a>
         <a href="#how" class="nav-link">How It Works</a>
         <a href="#impact" class="nav-link">Impact</a>
@@ -42,6 +43,7 @@
     </div>
     <div class="mobile-menu" id="mobileMenu">
       <a href="#crises" onclick="toggleMenu()">Active Crises</a>
+      <a href="#interactive-packer" onclick="toggleMenu()">Packer Kit</a>
       <a href="#stories" onclick="toggleMenu()">Stories</a>
       <a href="#how" onclick="toggleMenu()">How It Works</a>
       <a href="#impact" onclick="toggleMenu()">Impact</a>
@@ -261,6 +263,69 @@
           </div>
         </article>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ INTERACTIVE RELIEF KIT PACKER ═══════════ -->
+  <section class="section section-alt" id="interactive-packer">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-tag">Interactive Simulator</div>
+        <h2 class="section-title">Pack a Virtual Relief Kit</h2>
+        <p class="section-sub">Choose a crisis, set your budget, and see exactly what items are packed into your box in real-time. Transparently verified.</p>
+      </div>
+
+      <div class="packer-container">
+        <div class="packer-controls-panel">
+          <div class="packer-group">
+            <span class="packer-label">1. Choose Crisis Target</span>
+            <div class="packer-crisis-selector">
+              <button class="packer-crisis-btn active" id="btn-pack-flood" onclick="setPackerCrisis('crisis-flood')">Assam Floods</button>
+              <button class="packer-crisis-btn" id="btn-pack-earthquake" onclick="setPackerCrisis('crisis-earthquake')">Nepal Quake</button>
+              <button class="packer-crisis-btn" id="btn-pack-medical" onclick="setPackerCrisis('crisis-medical')">South Sudan Clinic</button>
+            </div>
+          </div>
+
+          <div class="packer-group">
+            <span class="packer-label">2. Adjust Your Budget</span>
+            <div class="packer-slider-wrap">
+              <div class="packer-budget-display">₹<span id="packerBudgetValue">1,500</span></div>
+              <input type="range" id="packerBudgetSlider" min="500" max="15000" step="500" value="1500" oninput="updatePackerBudget(this.value)" />
+              <div class="packer-slider-labels">
+                <span>₹500</span>
+                <span>₹7,500</span>
+                <span>₹15,000</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="packer-group" style="margin-top: 16px;">
+            <button class="btn-primary btn-large w-100" onclick="donatePackedKit()">
+              <span>Donate This Packed Kit →</span>
+            </button>
+            <p class="packer-note">100% of these resources will be distributed by verified ground coordinators.</p>
+          </div>
+        </div>
+
+        <div class="packer-preview-panel">
+          <div class="kit-box-visual">
+            <div class="kit-box-header">
+              <span class="box-icon">📦</span>
+              <div>
+                <h4 id="packerKitName">Assam Flood Relief Kit</h4>
+                <p id="packerKitDestination">Destination: Kamrup District, Assam</p>
+              </div>
+            </div>
+            <div class="kit-box-items" id="packerBoxItems">
+              <!-- Dynamically populated by app.js -->
+            </div>
+            <div class="kit-box-footer">
+              <span>Total Kit Value:</span>
+              <span class="kit-total-price">₹<span id="packerKitTotal">1,500</span></span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>

@@ -142,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderNotifications();
   updateSubmitBtn();
   startStoryAutoplay();
+  initPacker();
 });
 
 // ─── NAVBAR ──────────────────────────────────────────────────
@@ -540,6 +541,138 @@ function showToast(title, msg) {
 
 function closeToast() {
   document.getElementById('successToast').classList.add('hidden');
+}
+
+// ─── INTERACTIVE PACKER STATE & DATA ────────────────────────
+const packerState = {
+  activeCrisis: 'crisis-flood',
+  budget: 1500
+};
+
+const PACKER_ITEMS = {
+  'crisis-flood': [
+    { name: 'Water Purifying Drops (Family Kit)', cost: 100, icon: '💧' },
+    { name: 'Dry Food Packs (Multi-Meal)', cost: 250, icon: '🍱' },
+    { name: 'Mosquito Protection Net', cost: 300, icon: '🦟' },
+    { name: 'Hygiene & Sanitizer Pack', cost: 500, icon: '🧴' }
+  ],
+  'crisis-earthquake': [
+    { name: 'Thermal Fleece Blanket', cost: 400, icon: '🧣' },
+    { name: 'Solar Emergency Lantern', cost: 500, icon: '☀️' },
+    { name: 'Ground Tarpaulin Sheet', cost: 600, icon: '⛺' },
+    { name: 'Child Learning & Activity Kit', cost: 350, icon: '📚' }
+  ],
+  'crisis-medical': [
+    { name: 'ORS Packets (Box of 20)', cost: 100, icon: '💊' },
+    { name: 'Emergency Antibiotics Course', cost: 300, icon: '🩺' },
+    { name: 'Sterile Trauma Dressing Set', cost: 200, icon: '💉' },
+    { name: 'Clean Water Jerrican (20L)', cost: 150, icon: '🚰' }
+  ]
+};
+
+const PACKER_INFO = {
+  'crisis-flood': { name: 'Assam Flood Relief Kit', dest: 'Kamrup District, Assam' },
+  'crisis-earthquake': { name: 'Nepal Quake Shelter Kit', dest: 'Gorkha District, Nepal' },
+  'crisis-medical': { name: 'South Sudan Medical Kit', dest: 'Riverside Clinic, South Sudan' }
+};
+
+function initPacker() {
+  updatePackerUI();
+}
+
+function setPackerCrisis(crisisId) {
+  packerState.activeCrisis = crisisId;
+  
+  // Update active button highlights
+  document.querySelectorAll('.packer-crisis-btn').forEach(btn => btn.classList.remove('active'));
+  
+  const idMap = {
+    'crisis-flood': 'btn-pack-flood',
+    'crisis-earthquake': 'btn-pack-earthquake',
+    'crisis-medical': 'btn-pack-medical'
+  };
+  const activeBtn = document.getElementById(idMap[crisisId]);
+  if (activeBtn) activeBtn.classList.add('active');
+  
+  // Reset slider budget to default for new crisis
+  packerState.budget = 1500;
+  const slider = document.getElementById('packerBudgetSlider');
+  if (slider) slider.value = 1500;
+  
+  const display = document.getElementById('packerBudgetValue');
+  if (display) display.textContent = packerState.budget.toLocaleString('en-IN');
+  
+  updatePackerUI();
+}
+
+function updatePackerBudget(val) {
+  packerState.budget = parseInt(val) || 500;
+  const display = document.getElementById('packerBudgetValue');
+  if (display) display.textContent = packerState.budget.toLocaleString('en-IN');
+  updatePackerUI();
+}
+
+function updatePackerUI() {
+  const info = PACKER_INFO[packerState.activeCrisis];
+  const nameEl = document.getElementById('packerKitName');
+  const destEl = document.getElementById('packerKitDestination');
+  const totalEl = document.getElementById('packerKitTotal');
+  
+  if (nameEl) nameEl.textContent = info.name;
+  if (destEl) destEl.textContent = `Destination: ${info.dest}`;
+  if (totalEl) totalEl.textContent = packerState.budget.toLocaleString('en-IN');
+
+  const container = document.getElementById('packerBoxItems');
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  // Pack items proportionally based on budget
+  const items = PACKER_ITEMS[packerState.activeCrisis];
+  let remaining = packerState.budget;
+  const packedCounts = {};
+
+  items.forEach(item => {
+    packedCounts[item.name] = 0;
+  });
+
+  // Simple distribution loop: distribute item by item as long as budget permits
+  let addedAny = true;
+  while (remaining >= 50 && addedAny) {
+    addedAny = false;
+    for (const item of items) {
+      if (remaining >= item.cost) {
+        packedCounts[item.name]++;
+        remaining -= item.cost;
+        addedAny = true;
+      }
+    }
+  }
+
+  // Render rows
+  items.forEach(item => {
+    const qty = packedCounts[item.name];
+    if (qty > 0) {
+      const row = document.createElement('div');
+      row.className = 'kit-item-row';
+      row.innerHTML = `
+        <span class="kit-item-icon">${item.icon}</span>
+        <span class="kit-item-name">${item.name}</span>
+        <span class="kit-item-qty" id="qty-${item.name.replace(/\s+/g, '-')}">${qty}x</span>
+      `;
+      container.appendChild(row);
+    }
+  });
+
+  if (container.children.length === 0) {
+    container.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-dim);font-size:0.85rem;">Drag slider to add items...</div>`;
+  }
+}
+
+function donatePackedKit() {
+  const amt = packerState.budget;
+  openModal(packerState.activeCrisis);
+  selectAmount(amt);
 }
 
 // ─── KEYBOARD ESC ──────────────────────────────────────────
