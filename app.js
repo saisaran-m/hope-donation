@@ -154,7 +154,12 @@ function initNavbar() {
 }
 
 function toggleMenu() {
-  document.getElementById('mobileMenu').classList.toggle('open');
+  const menu = document.getElementById('mobileMenu');
+  const hamburger = document.getElementById('hamburger');
+  const isOpen = menu.classList.contains('open');
+  
+  menu.classList.toggle('open', !isOpen);
+  hamburger.classList.toggle('open', !isOpen);
 }
 
 // ─── PARTICLES (Ken Burns complement) ───────────────────────
